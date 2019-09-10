@@ -17,32 +17,23 @@ public class Archer extends AbstractUnit {
   /**
    * Creates a new archer
    *
-   * @param hitPoints
+   * @param maxHitPoints
    *     maximum hit points of the unit
    * @param movement
    *     the amount of cells this unit can move
-   * @param position
+   * @param location
    *     the initial position of this unit
    * @param items
    *     the items carried by this unit
    */
-  public Archer(final int hitPoints, final int movement, final Location position,
+  public Archer(final int maxHitPoints, final int movement, final Location location,
       final IEquipableItem... items) {
-    super(hitPoints, movement, position, 3, items);
+    super(maxHitPoints, movement, location, 3, items);
   }
 
-  /**
-   * Sets the currently equipped item of this unit.
-   * <p>
-   * The <i>Archer</i> can <b>only equip Bows</b>.
-   *
-   * @param item
-   *     the item to equip
-   */
   @Override
-  public void equipItem(final IEquipableItem item) {
-    if (item instanceof Bow) {
-      equippedItem = item;
-    }
+  public void equipBow(final Bow bow) {
+    bow.setOwner(this);
+    equippedItem = bow;
   }
 }

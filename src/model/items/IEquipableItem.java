@@ -1,5 +1,6 @@
 package model.items;
 
+import model.units.AbstractUnit;
 import model.units.IUnit;
 
 /**
@@ -17,9 +18,17 @@ public interface IEquipableItem {
    * Equips this item to a unit.
    *
    * @param unit
-   *     the unit that will be quipped with the item
+   *     the unit that will be equipped with the item
    */
   void equipTo(IUnit unit);
+
+  /**
+   * Set the owner for this item.
+   *
+   * @param unit
+   *      the unit that will be the owner of the item
+   */
+  void setOwner(IUnit unit);
 
   /**
    * @return the unit that has currently equipped this item
@@ -45,4 +54,5 @@ public interface IEquipableItem {
    * @return the maximum range of the item
    */
   int getMaxRange();
+
 }

@@ -1,7 +1,8 @@
 package model.units;
 
 import java.util.List;
-import model.items.IEquipableItem;
+
+import model.items.*;
 import model.map.Location;
 
 /**
@@ -26,7 +27,7 @@ public interface IUnit {
   /**
    * @return hit points of the unit
    */
-  int getCurrentHitPoints();
+  int getHitPoints();
 
   /**
    * @return the items carried by this unit
@@ -65,4 +66,14 @@ public interface IUnit {
    * If the other location is out of this unit's movement range, the unit doesn't move.
    */
   void moveTo(Location targetLocation);
+
+  void equipBow(final Bow bow);
+
+  void equipAxe(final Axe axe);
+
+  void equipSpear(final Spear spear);
+
+  void equipStaff(final Staff staff);
+
+  void equipSword(final Sword sword);
 }

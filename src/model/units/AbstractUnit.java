@@ -5,7 +5,8 @@ import static java.lang.Math.min;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import model.items.IEquipableItem;
+
+import model.items.*;
 import model.map.Location;
 
 /**
@@ -21,15 +22,16 @@ import model.map.Location;
 public abstract class AbstractUnit implements IUnit {
 
   protected final List<IEquipableItem> items = new ArrayList<>();
-  private final int currentHitPoints;
+  private final int maxHitPoints;
   private final int movement;
+  private int hitPoints;
   protected IEquipableItem equippedItem;
   private Location location;
 
   /**
    * Creates a new Unit.
    *
-   * @param hitPoints
+   * @param maxHitPoints
    *     the maximum amount of damage a unit can sustain
    * @param movement
    *     the number of panels a unit can move
@@ -37,18 +39,21 @@ public abstract class AbstractUnit implements IUnit {
    *     the current position of this unit on the map
    * @param maxItems
    *     maximum amount of items this unit can carry
+   * @param items
+   *     the items carried by this unit
    */
-  protected AbstractUnit(final int hitPoints, final int movement,
-      final Location location, final int maxItems, final IEquipableItem... items) {
-    this.currentHitPoints = hitPoints;
+  protected AbstractUnit(final int maxHitPoints, final int movement,
+                         final Location location, final int maxItems, final IEquipableItem... items) {
+    this.maxHitPoints = maxHitPoints;
+    this.hitPoints = maxHitPoints;
     this.movement = movement;
     this.location = location;
     this.items.addAll(Arrays.asList(items).subList(0, min(maxItems, items.length)));
   }
 
   @Override
-  public int getCurrentHitPoints() {
-    return currentHitPoints;
+  public int getHitPoints() {
+    return hitPoints;
   }
 
   @Override
@@ -64,6 +69,11 @@ public abstract class AbstractUnit implements IUnit {
   @Override
   public void setEquippedItem(final IEquipableItem item) {
     this.equippedItem = item;
+  }
+
+  @Override
+  public void equipItem(final IEquipableItem item) {
+    item.equipTo(this);
   }
 
   @Override
@@ -88,4 +98,30 @@ public abstract class AbstractUnit implements IUnit {
       setLocation(targetLocation);
     }
   }
+
+  @Override
+  public void equipBow(final Bow bow) {
+    // do nothing
+  }
+
+  @Override
+  public void equipAxe(final Axe axe) {
+    // do nothing
+  }
+
+  @Override
+  public void equipSpear(final Spear spear) {
+    // do nothing
+  }
+
+  @Override
+  public void equipStaff(final Staff staff) {
+    // do nothing
+  }
+
+  @Override
+  public void equipSword(final Sword sword) {
+    // do nothing
+  }
+
 }

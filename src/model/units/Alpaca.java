@@ -15,28 +15,19 @@ import model.map.Location;
 public class Alpaca extends AbstractUnit {
 
   /**
-   * Creates a new Alpaca.
+   * Creates a new cleric.
    *
-   * @param hitPoints
-   *     the amount of damage this unit can receive
+   * @param maxHitPoints
+   *     maximum hit points of the unit
    * @param movement
-   *     number of cells the unit can move
+   *     the amount of cells this unit can move
    * @param location
-   *     current position of the unit
+   *     the initial position of this unit
+   * @param items
+   *     the items carried by this unit
    */
-  public Alpaca(final int hitPoints, final int movement, final Location location,
+  public Alpaca(final int maxHitPoints, final int movement, final Location location,
       final IEquipableItem... items) {
-    super(hitPoints, movement, location, Integer.MAX_VALUE, items);
+    super(maxHitPoints, movement, location, Integer.MAX_VALUE, items);
   }
-
-  /**
-   * {@inheritDoc}
-   * <p>
-   * The <i>Alpaca</i> cannot equip any item.
-   */
-  @Override
-  public void equipItem(final IEquipableItem item) {
-    // Method body intentionally left empty
-  }
-
 }

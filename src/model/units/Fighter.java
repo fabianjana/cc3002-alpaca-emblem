@@ -2,6 +2,7 @@ package model.units;
 
 import model.items.Axe;
 import model.items.IEquipableItem;
+import model.items.Sword;
 import model.map.Location;
 
 /**
@@ -13,21 +14,26 @@ import model.map.Location;
  */
 public class Fighter extends AbstractUnit {
 
-  public Fighter(final int hitPoints, final int movement, final Location location,
+  /**
+   * Creates a new fighter.
+   *
+   * @param maxHitPoints
+   *     maximum hit points of the unit
+   * @param movement
+   *     the amount of cells this unit can move
+   * @param location
+   *     the initial position of this unit
+   * @param items
+   *     the items carried by this unit
+   */
+  public Fighter(final int maxHitPoints, final int movement, final Location location,
       IEquipableItem... items) {
-    super(hitPoints, movement, location, 3, items);
+    super(maxHitPoints, movement, location, 3, items);
   }
 
-  /**
-   * Sets the currently equipped item of this unit.
-   *
-   * @param item
-   *     the item to equip
-   */
   @Override
-  public void equipItem(final IEquipableItem item) {
-    if (item instanceof Axe) {
-      equippedItem = item;
-    }
+  public void equipSword(final Sword sword) {
+    sword.setOwner(this);
+    equippedItem = sword;
   }
 }
