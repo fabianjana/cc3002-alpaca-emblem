@@ -35,4 +35,12 @@ public class HeroTest extends AbstractTestUnit {
     hero.equipItem(spear);
     assertEquals(spear, hero.getEquippedItem());
   }
+
+  /**
+   * Equip an spear to the unit
+   */
+  @Override
+  public void equipTestItem() {
+    hero.equipItem(spear);
+  }
 }

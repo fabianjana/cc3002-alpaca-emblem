@@ -33,4 +33,13 @@ public class Bow extends AbstractItem {
   public void equipTo(final IUnit unit) {
     unit.equipBow(this);
   }
+
+  @Override
+  public void useItem(IUnit target) {
+    if (target.getEquippedItem() == null) {
+      target.receiveNormalDamage(this);
+    } else {
+      target.getEquippedItem().receiveBowDamage(this);
+    }
+  }
 }

@@ -15,8 +15,19 @@ public class AlpacaTest extends AbstractTestUnit {
     alpaca = new Alpaca(50, 2, field.getCell(0, 0));
   }
 
+  /**
+   * @return the current unit being tested
+   */
   @Override
   public Alpaca getTestUnit() {
     return alpaca;
+  }
+
+  /**
+   * Alpaca can't equip any item
+   */
+  @Override
+  public void equipTestItem() {
+    // do nothing
   }
 }

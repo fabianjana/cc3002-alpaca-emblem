@@ -124,4 +124,46 @@ public abstract class AbstractUnit implements IUnit {
     // do nothing
   }
 
+  /**
+   * Check if the target is out of range.
+   */
+  private boolean isOutOfRange(Location targetLocation) {
+    return getLocation().distanceTo(targetLocation) < getEquippedItem().getMinRange()
+            || getLocation().distanceTo(targetLocation) > getEquippedItem().getMaxRange();
+  }
+
+  @Override
+  public void combat(IUnit target) {
+    if (getEquippedItem() == null || isOutOfRange(target.getLocation())) { return; }
+    getEquippedItem().useItem(target);
+    target.counterAttack(this);
+  }
+
+   public void counterAttack(IUnit target) {
+     if (getEquippedItem() == null || isOutOfRange(target.getLocation())
+        || this.hitPoints == 0) {
+       return;
+     }
+     getEquippedItem().useItem(target);
+  }
+
+  @Override
+  public void receiveNormalDamage(IEquipableItem item) {
+    hitPoints = (hitPoints > item.getPower()) ? (hitPoints - item.getPower()) : 0;
+  }
+
+  @Override
+  public void receiveNormalHeal(IEquipableItem item) {
+    hitPoints = (maxHitPoints < item.getPower()) ? maxHitPoints : (hitPoints + item.getPower());
+  }
+
+  @Override
+  public void receiveIncreasedDamage(IEquipableItem item) {
+    hitPoints = (hitPoints > item.getPower() * 1.5) ? 0 : (int) (hitPoints - item.getPower() * 1.5);
+  }
+
+  @Override
+  public void receiveReducedDamage(IEquipableItem item) {
+    hitPoints = (hitPoints > item.getPower() - 20) ? 0 : (hitPoints - (item.getPower() - 20));
+  }
 }

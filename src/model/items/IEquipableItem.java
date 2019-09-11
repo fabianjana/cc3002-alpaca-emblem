@@ -55,4 +55,15 @@ public interface IEquipableItem {
    */
   int getMaxRange();
 
+  void useItem(IUnit target);
+
+  void receiveAxeDamage(IEquipableItem item);
+
+  void receiveBowDamage(IEquipableItem item);
+
+  void receiveSpearDamage(IEquipableItem item);
+
+  void receiveStaffHealing(IEquipableItem item);
+
+  void receiveSwordDamage(IEquipableItem item);
 }

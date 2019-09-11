@@ -23,7 +23,35 @@ public interface ITestUnit {
    */
   void setTestUnit();
 
+  /**
+   * Set up an Alpaca target
+   */
   void setTargetAlpaca();
+
+  /**
+   * Set up a Archer target
+   */
+  void setTargetArcher();
+
+  /**
+   * Set up a Cleric target
+   */
+  void setTargetCleric();
+
+  /**
+   * Set up a Fighter target
+   */
+  void setTargetFighter();
+
+  /**
+   * Set up a Hero target
+   */
+  void setTargetHero();
+
+  /**
+   * Set up a SwordMaster target
+   */
+  void setTargetSwordMaster();
 
   /**
    * Creates a set of testing weapons
@@ -104,7 +132,78 @@ public interface ITestUnit {
   Field getField();
 
   /**
+   * Equip a valid item to this unit
+   */
+  void equipTestItem();
+
+  /**
    * @return the target Alpaca
    */
   Alpaca getTargetAlpaca();
+
+  /**
+   * @return the target Archer
+   */
+  Archer getTargetArcher();
+
+  /**
+   * @return the target Cleric
+   */
+  Cleric getTargetCleric();
+
+  /**
+   * @return the target Fighter
+   */
+  Fighter getTargetFighter();
+
+  /**
+   * @return the target Hero
+   */
+  Hero getTargetHero();
+
+  /**
+   * @return the target SwordMaster
+   */
+  SwordMaster getTargetSwordMaster();
+
+  /**
+   * Checks if combat works correctly against a target
+   */
+  void combatTest(IUnit target);
+
+  /**
+   * Checks if combat works correctly against an Alpaca Unit
+   */
+  @Test
+  void combatAlpacaTest();
+
+  /**
+   * Checks if combat works correctly against an Archer Unit
+   */
+  @Test
+  void combatArcherTest();
+
+  /**
+   * Checks if combat works correctly against an Cleric Unit
+   */
+  @Test
+  void combatClericTest();
+
+  /**
+   * Checks if combat works correctly against an Fighter Unit
+   */
+  @Test
+  void combatFighterTest();
+
+  /**
+   * Checks if combat works correctly against an Hero Unit
+   */
+  @Test
+  void combatHeroTest();
+
+  /**
+   * Checks if combat works correctly against an SwordMaster Unit
+   */
+  @Test
+  void combatSwordMasterTest();
 }

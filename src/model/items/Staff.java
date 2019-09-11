@@ -33,4 +33,8 @@ public class Staff extends AbstractItem {
     unit.equipStaff(this);
   }
 
+  @Override
+  public void useItem(IUnit target) {
+    target.getEquippedItem().receiveStaffHealing(this);
+  }
 }

@@ -33,4 +33,8 @@ public class Spear extends AbstractItem {
     unit.equipSpear(this);
   }
 
+  @Override
+  public void useItem(IUnit target) {
+    target.getEquippedItem().receiveSpearDamage(this);
+  }
 }

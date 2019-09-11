@@ -38,4 +38,12 @@ public class FighterTest extends AbstractTestUnit {
     fighter.equipItem(axe);
     assertEquals(axe, fighter.getEquippedItem());
   }
+
+  /**
+   * Equip an axe to the unit
+   */
+  @Override
+  public void equipTestItem() {
+    fighter.equipItem(axe);
+  }
 }

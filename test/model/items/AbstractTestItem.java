@@ -105,10 +105,10 @@ public abstract class AbstractTestItem {
    * Checks that the Item can be correctly equipped to a unit
    */
   @Test
-  public void equippedToTest() {
+  public void setOwnerTest() {
     assertNull(getTestItem().getOwner());
     IUnit unit = getTestUnit();
-    getTestItem().equipTo(unit);
+    getTestItem().setOwner(unit);
     assertEquals(unit, getTestItem().getOwner());
   }
 

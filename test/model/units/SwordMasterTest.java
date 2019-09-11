@@ -1,5 +1,7 @@
 package model.units;
 
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -26,10 +28,22 @@ public class SwordMasterTest extends AbstractTestUnit {
     return swordMaster;
   }
 
+  /**
+   * Checks if the sword is equipped correctly to the unit
+   */
+  @Test
   @Override
   public void equipSwordTest() {
     assertNull(swordMaster.getEquippedItem());
     swordMaster.equipItem(sword);
     assertEquals(sword, swordMaster.getEquippedItem());
+  }
+
+  /**
+   * Equip a sword to the unit
+   */
+  @Override
+  public void equipTestItem() {
+    swordMaster.equipItem(sword);
   }
 }

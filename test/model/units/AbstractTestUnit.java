@@ -17,16 +17,46 @@ import org.junit.jupiter.api.Test;
 public abstract class AbstractTestUnit implements ITestUnit {
 
   protected Alpaca targetAlpaca;
-  protected Bow bow;
+  protected Archer targetArcher;
+  protected Cleric targetCleric;
+  protected Fighter targetFighter;
+  protected Hero targetHero;
+  protected SwordMaster targetSwordMaster;
   protected Field field;
-  protected Axe axe;
-  protected Sword sword;
-  protected Staff staff;
-  protected Spear spear;
+  protected Bow bow, targetBow, overkillBow;
+  protected Axe axe, targetAxe, overkillAxe;
+  protected Sword sword, targetSword, overkillSword;
+  protected Staff staff, targetStaff, overhealStaff;
+  protected Spear spear, targetSpear, overkillSpear;
 
   @Override
   public void setTargetAlpaca() {
     targetAlpaca = new Alpaca(50, 2, field.getCell(1, 0));
+  }
+
+  @Override
+  public void setTargetArcher() {
+    targetArcher = new Archer(50, 2, field.getCell(1, 0));
+  }
+
+  @Override
+  public void setTargetCleric() {
+    targetCleric = new Cleric(50, 2, field.getCell(1, 0));
+  }
+
+  @Override
+  public void setTargetFighter() {
+     targetFighter = new Fighter(50, 2, field.getCell(1, 0));
+  }
+
+  @Override
+  public void setTargetHero() {
+    targetHero = new Hero(50, 2, field.getCell(1, 0));
+  }
+
+  @Override
+  public void setTargetSwordMaster() {
+    targetSwordMaster = new SwordMaster(50, 2, field.getCell(1, 0));
   }
 
   /**
@@ -36,7 +66,6 @@ public abstract class AbstractTestUnit implements ITestUnit {
   public void setUp() {
     setField();
     setTestUnit();
-    setTargetAlpaca();
     setWeapons();
   }
 
@@ -67,6 +96,18 @@ public abstract class AbstractTestUnit implements ITestUnit {
     this.spear = new Spear("Spear", 10, 1, 2);
     this.staff = new Staff("Staff", 10, 1, 2);
     this.bow = new Bow("Bow", 10, 2, 3);
+
+    this.targetAxe = new Axe("Axe", 10, 1, 2);
+    this.targetSword = new Sword("Sword", 10, 1, 2);
+    this.targetSpear = new Spear("Spear", 10, 1, 2);
+    this.targetStaff = new Staff("Staff", 10, 1, 2);
+    this.targetBow = new Bow("Bow", 10, 2, 3);
+
+    this.overkillAxe = new Axe("Axe", 100, 1, 2);
+    this.overkillSword = new Sword("Sword", 100, 1, 2);
+    this.overkillSpear = new Spear("Spear", 100, 1, 2);
+    this.overhealStaff = new Staff("Staff", 100, 1, 2);
+    this.overkillBow = new Bow("Bow", 100, 2, 3);
   }
 
   /**
@@ -186,6 +227,7 @@ public abstract class AbstractTestUnit implements ITestUnit {
     getTestUnit().moveTo(getField().getCell(0, 2));
     assertEquals(new Location(0, 2), getTestUnit().getLocation());
 
+    setTargetAlpaca();
     getField().getCell(0, 1).setUnit(getTargetAlpaca());
     getTestUnit().moveTo(getField().getCell(0, 1));
     assertEquals(new Location(0, 2), getTestUnit().getLocation());
@@ -199,11 +241,98 @@ public abstract class AbstractTestUnit implements ITestUnit {
     return field;
   }
 
-  /**
-   * @return the target Alpaca
-   */
+  @Override
+  public abstract void equipTestItem();
+
   @Override
   public Alpaca getTargetAlpaca() {
     return targetAlpaca;
   }
+
+  @Override
+  public Archer getTargetArcher() {
+    return targetArcher;
+  }
+
+  @Override
+  public Cleric getTargetCleric() {
+    return targetCleric;
+  }
+
+  @Override
+  public Fighter getTargetFighter() {
+    return targetFighter;
+  }
+
+  @Override
+  public Hero getTargetHero() {
+    return targetHero;
+  }
+
+  @Override
+  public SwordMaster getTargetSwordMaster() {
+    return targetSwordMaster;
+  }
+
+  /**
+   * Generic combat test without any equipped item
+   */
+  @Override
+  public void combatTest(IUnit target) {
+    getTestUnit().combat(target);
+    assertEquals(50, getTestUnit().getHitPoints());
+    assertEquals(50, target.getHitPoints());
+  }
+
+  /**
+   * Check if combat against alpaca works correctly
+   */
+  @Override
+  @Test
+  public void combatAlpacaTest() {
+    setTargetAlpaca();
+    combatTest(getTargetAlpaca());
+  }
+
+  @Override
+  @Test
+  public void combatArcherTest() {
+    setTargetArcher();
+    combatTest(getTargetArcher());
+  }
+
+
+  @Override
+  @Test
+  public void combatClericTest() {
+    setTargetCleric();
+    combatTest(getTargetCleric());
+  }
+
+
+  @Override
+  @Test
+  public void combatFighterTest() {
+    setTargetFighter();
+    combatTest(getTargetFighter());
+  }
+
+
+  @Override
+  @Test
+  public void combatHeroTest() {
+    setTargetHero();
+    combatTest(getTargetHero());
+  }
+
+
+  @Override
+  @Test
+  public void combatSwordMasterTest() {
+    setTargetSwordMaster();
+    combatTest(getTargetSwordMaster());
+  }
+
+
+
 }

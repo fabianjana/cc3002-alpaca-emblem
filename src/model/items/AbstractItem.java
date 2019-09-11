@@ -64,4 +64,29 @@ public abstract class AbstractItem implements IEquipableItem {
   public int getMaxRange() {
     return maxRange;
   }
+
+  @Override
+  public void receiveAxeDamage(IEquipableItem item) {
+    getOwner().receiveNormalDamage(item);
+  }
+
+  @Override
+  public void receiveBowDamage(IEquipableItem item) {
+    getOwner().receiveNormalDamage(item);
+  }
+
+  @Override
+  public void receiveSpearDamage(IEquipableItem item) {
+    getOwner().receiveNormalDamage(item);
+  }
+
+  @Override
+  public void receiveStaffHealing(IEquipableItem item) {
+    getOwner().receiveNormalHeal(item);
+  }
+
+  @Override
+  public void receiveSwordDamage(IEquipableItem item) {
+    getOwner().receiveNormalDamage(item);
+  }
 }

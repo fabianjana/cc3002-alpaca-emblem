@@ -32,8 +32,8 @@ public class Fighter extends AbstractUnit {
   }
 
   @Override
-  public void equipSword(final Sword sword) {
-    sword.setOwner(this);
-    equippedItem = sword;
+  public void equipAxe(final Axe axe) {
+    axe.setOwner(this);
+    equippedItem = axe;
   }
 }

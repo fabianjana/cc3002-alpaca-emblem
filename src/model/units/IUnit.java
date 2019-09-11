@@ -67,13 +67,40 @@ public interface IUnit {
    */
   void moveTo(Location targetLocation);
 
+  /**
+   * Equip a bow to this unit.
+   */
   void equipBow(final Bow bow);
 
+  /**
+   * Equip an axe to this unit.
+   */
   void equipAxe(final Axe axe);
 
+  /**
+   * Equip a spear to this unit.
+   */
   void equipSpear(final Spear spear);
 
+  /**
+   * Equip a staff to this unit.
+   */
   void equipStaff(final Staff staff);
 
+  /**
+   * Equip a sword to this unit.
+   */
   void equipSword(final Sword sword);
+
+  void combat(IUnit unit);
+
+  void receiveNormalDamage(IEquipableItem item);
+
+  void receiveNormalHeal(IEquipableItem item);
+
+  void receiveIncreasedDamage(IEquipableItem item);
+
+  void receiveReducedDamage(IEquipableItem item);
+
+  void counterAttack(IUnit target);
 }
