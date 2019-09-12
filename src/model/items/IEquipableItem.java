@@ -66,4 +66,10 @@ public interface IEquipableItem {
   void receiveStaffHealing(IEquipableItem item);
 
   void receiveSwordDamage(IEquipableItem item);
+
+  void receiveLightMagicBookDamage(IEquipableItem item);
+
+  void receiveDarkMagicBookDamage(IEquipableItem item);
+
+  void receiveSoulMagicBookDamage(IEquipableItem item);
 }

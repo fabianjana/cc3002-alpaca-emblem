@@ -3,6 +3,7 @@ package model.units;
 import model.items.IEquipableItem;
 import model.items.Spear;
 import model.map.Location;
+import model.roles.DamageDealer;
 
 /**
  * A <i>Hero</i> is a special kind of unit, the player that defeats this unit wins the game.
@@ -33,7 +34,7 @@ public class Hero extends AbstractUnit {
 
   @Override
   public void equipSpear(final Spear spear) {
-    spear.setOwner(this);
-    equippedItem = spear;
+    setEquippedItem(spear);
+    setRole(new DamageDealer());
   }
 }

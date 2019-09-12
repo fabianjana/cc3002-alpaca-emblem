@@ -35,6 +35,20 @@ public class Axe extends AbstractItem {
 
   @Override
   public void useOn(IUnit target) {
-    target.getEquippedItem().receiveAxeDamage(this);
+    if (target.getEquippedItem() == null) {
+      target.receiveNormalDamage(this);
+    } else {
+      target.getEquippedItem().receiveAxeDamage(this);
+    }
+  }
+
+  @Override
+  public void receiveSwordDamage(IEquipableItem item) {
+    getOwner().receiveIncreasedDamage(item);
+  }
+
+  @Override
+  public void receiveSpearDamage(IEquipableItem item) {
+    getOwner().receiveReducedDamage(item);
   }
 }

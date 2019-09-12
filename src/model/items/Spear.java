@@ -35,6 +35,20 @@ public class Spear extends AbstractItem {
 
   @Override
   public void useOn(IUnit target) {
-    target.getEquippedItem().receiveSpearDamage(this);
+    if (target.getEquippedItem() == null) {
+      target.receiveNormalDamage(this);
+    } else {
+      target.getEquippedItem().receiveSpearDamage(this);
+    }
+  }
+
+  @Override
+  public void receiveAxeDamage(IEquipableItem item) {
+    getOwner().receiveIncreasedDamage(item);
+  }
+
+  @Override
+  public void receiveSwordDamage(IEquipableItem item) {
+    getOwner().receiveReducedDamage(item);
   }
 }

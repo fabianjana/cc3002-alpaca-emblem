@@ -4,6 +4,7 @@ import model.items.Axe;
 import model.items.IEquipableItem;
 import model.items.Sword;
 import model.map.Location;
+import model.roles.DamageDealer;
 
 /**
  * This class represents a fighter type unit.
@@ -33,7 +34,7 @@ public class Fighter extends AbstractUnit {
 
   @Override
   public void equipAxe(final Axe axe) {
-    axe.setOwner(this);
-    equippedItem = axe;
+    setEquippedItem(axe);
+    setRole(new DamageDealer());
   }
 }

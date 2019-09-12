@@ -94,6 +94,11 @@ public interface IUnit {
   void equipSword(final Sword sword);
 
   /**
+   * Equip a magic book to this unit
+   */
+  void equipMagicBook(final MagicBook MagicBook);
+
+  /**
    * @return the current role of the unit
    */
   Role getRole();

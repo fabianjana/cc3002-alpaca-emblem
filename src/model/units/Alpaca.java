@@ -15,7 +15,7 @@ import model.map.Location;
 public class Alpaca extends AbstractUnit {
 
   /**
-   * Creates a new cleric.
+   * Creates a new alpaca.
    *
    * @param maxHitPoints
    *     maximum hit points of the unit

@@ -35,6 +35,20 @@ public class Sword extends AbstractItem {
 
   @Override
   public void useOn(IUnit target) {
-    target.getEquippedItem().receiveSwordDamage(this);
+    if (target.getEquippedItem() == null) {
+      target.receiveNormalDamage(this);
+    } else {
+      target.getEquippedItem().receiveSwordDamage(this);
+    }
+  }
+
+  @Override
+  public void receiveAxeDamage(IEquipableItem item) {
+    getOwner().receiveReducedDamage(item);
+  }
+
+  @Override
+  public void receiveSpearDamage(IEquipableItem item) {
+    getOwner().receiveIncreasedDamage(item);
   }
 }

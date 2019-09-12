@@ -3,6 +3,7 @@ package model.units;
 import model.items.IEquipableItem;
 import model.items.Staff;
 import model.map.Location;
+import model.roles.Support;
 
 /**
  * This class represents a cleric type unit. A cleric can only use staff type weapons, which means
@@ -32,7 +33,7 @@ public class Cleric extends AbstractUnit {
 
   @Override
   public void equipStaff(final Staff staff) {
-    staff.setOwner(this);
-    equippedItem = staff;
+    setEquippedItem(staff);
+    setRole(new Support());
   }
 }

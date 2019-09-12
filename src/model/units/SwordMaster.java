@@ -3,6 +3,7 @@ package model.units;
 import model.items.IEquipableItem;
 import model.items.Sword;
 import model.map.Location;
+import model.roles.DamageDealer;
 
 /**
  * This class represents a <i>SwordMaster</i> type unit.
@@ -33,7 +34,7 @@ public class SwordMaster extends AbstractUnit {
 
   @Override
   public void equipSword(final Sword sword) {
-    sword.setOwner(this);
-    equippedItem = sword;
+    setEquippedItem(sword);
+    setRole(new DamageDealer());
   }
 }

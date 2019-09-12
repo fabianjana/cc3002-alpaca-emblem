@@ -88,4 +88,19 @@ public abstract class AbstractItem implements IEquipableItem {
   public void receiveSwordDamage(IEquipableItem item) {
     getOwner().receiveNormalDamage(item);
   }
+
+  @Override
+  public void receiveDarkMagicBookDamage(IEquipableItem item) {
+    getOwner().receiveIncreasedDamage(item);
+  }
+
+  @Override
+  public void receiveLightMagicBookDamage(IEquipableItem item) {
+    getOwner().receiveIncreasedDamage(item);
+  }
+
+  @Override
+  public void receiveSoulMagicBookDamage(IEquipableItem item) {
+    getOwner().receiveIncreasedDamage(item);
+  }
 }

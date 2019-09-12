@@ -107,6 +107,11 @@ public abstract class AbstractUnit implements IUnit {
   }
 
   @Override
+  public void equipMagicBook(final MagicBook MagicBook) {
+    //do nothing
+  }
+
+  @Override
   public Location getLocation() {
     return location;
   }
@@ -185,6 +190,6 @@ public abstract class AbstractUnit implements IUnit {
 
   @Override
   public void receiveReducedDamage(IEquipableItem item) {
-    hitPoints = (hitPoints > item.getPower() - 20) ? (hitPoints - (item.getPower() - 20)) : die();
+    hitPoints = (hitPoints > item.getPower() - 20) ? (hitPoints - Math.max(item.getPower() - 20, 0)) : die();
   }
 }
