@@ -108,18 +108,53 @@ public interface IUnit {
    */
   void setRole(Role role);
 
-  void combat(IUnit unit);
+  /**
+   * Establish a combat between this unit and the target
+   *
+   * @param target the unit who will be targeted on the combat
+   */
+  void combat(IUnit target);
 
+  /**
+   * If the target is on range of the equipped item, use the equipped item on the target unit
+   *
+   * @param target target who will receive this unit equipped item effect.
+   */
   void useItem(IUnit target);
 
+  /**
+   * Receive a no-modified attack
+   *
+   * @param item the item which will attack this unit.
+   */
   void receiveNormalDamage(IEquipableItem item);
 
+  /**
+   * Receive a no-modified heal
+   *
+   * @param item the item which will heal this unit.
+   */
   void receiveNormalHeal(IEquipableItem item);
 
+  /**
+   * Receive heal from a item which is strong against the unit equipped item
+   *
+   * @param item the item which will heal this unit.
+   */
   void receiveIncreasedHealing(IEquipableItem item);
 
+  /**
+   * Receive an attack from a item which is strong against the unit equipped item
+   *
+   * @param item the item which will attack this unit.
+   */
   void receiveIncreasedDamage(IEquipableItem item);
 
+  /**
+   * Receive an attack from a item which is weak against the unit equipped item
+   *
+   * @param item the item which will attack this unit.
+   */
   void receiveReducedDamage(IEquipableItem item);
 
 }

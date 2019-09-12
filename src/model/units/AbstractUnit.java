@@ -1,5 +1,6 @@
 package model.units;
 
+import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 import java.util.ArrayList;
@@ -209,9 +210,26 @@ public abstract class AbstractUnit implements IUnit {
 
   @Override
   public void receiveNormalHeal(IEquipableItem item) {
-    hitPoints = (maxHitPoints > item.getPower()) ? (hitPoints + item.getPower()) : maxHitPoints;
+    int healing = Math.max(hitPoints + item.getPower(),maxHitPoints);
+    hitPoints = (maxHitPoints > hitPoints) ? healing : maxHitPoints;
   }
 
+  /**
+   * If the item power is odd, the healing effect will round down.
+   *
+   * @param item the item which will heal this unit.
+   */
+  @Override
+  public void receiveIncreasedHealing(IEquipableItem item) {
+    int increasedHealing = Math.max((int) (hitPoints + item.getPower() * 1.5), maxHitPoints);
+    hitPoints = (maxHitPoints > hitPoints) ? increasedHealing : maxHitPoints;
+  }
+
+  /**
+   * If the item power is odd, the damage effect will round down.
+   *
+   * @param item the item which will attack this unit.
+   */
   @Override
   public void receiveIncreasedDamage(IEquipableItem item) {
     hitPoints = (hitPoints > item.getPower() * 1.5) ? (int) (hitPoints - item.getPower() * 1.5) : die();
