@@ -3,6 +3,7 @@ package model.units;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import model.items.Axe;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -42,17 +43,18 @@ public class ClericTest extends AbstractTestUnit {
   }
 
   /**
-   * Check if combat against alpaca works correctly
+   * Check if combat with alpaca works correctly
    */
   @Test
   @Override
   public void combatAlpacaTest() {
     setTargetAlpaca();
+    getTargetAlpaca().receiveNormalDamage(new Axe("Axe", 40, 1,2));
 
-    // Attack without any item equipped, out of range
+    // Heal without any item equipped, out of range
     getTestUnit().combat(getTargetAlpaca());
     assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(50, getTargetAlpaca().getHitPoints());
+    assertEquals(10, getTargetAlpaca().getHitPoints());
 
     // Attack with bow out of range
     equipTestItem();
@@ -74,7 +76,7 @@ public class ClericTest extends AbstractTestUnit {
   }
 
   /**
-   * Check if combat against archer works correctly
+   * Check if combat with archer works correctly
    */
   @Test
   @Override

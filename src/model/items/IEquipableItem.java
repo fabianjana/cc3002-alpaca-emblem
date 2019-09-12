@@ -55,7 +55,7 @@ public interface IEquipableItem {
    */
   int getMaxRange();
 
-  void useItem(IUnit target);
+  void useOn(IUnit target);
 
   void receiveAxeDamage(IEquipableItem item);
 

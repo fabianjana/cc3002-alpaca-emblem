@@ -34,7 +34,11 @@ public class Staff extends AbstractItem {
   }
 
   @Override
-  public void useItem(IUnit target) {
-    target.getEquippedItem().receiveStaffHealing(this);
+  public void useOn(IUnit target) {
+    if (target.getEquippedItem() == null) {
+      target.receiveNormalHeal(this);
+    } else {
+      target.getEquippedItem().receiveStaffHealing(this);
+    }
   }
 }

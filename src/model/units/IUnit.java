@@ -4,6 +4,7 @@ import java.util.List;
 
 import model.items.*;
 import model.map.Location;
+import model.roles.Role;
 
 /**
  * This interface represents all units in the game.
@@ -92,7 +93,19 @@ public interface IUnit {
    */
   void equipSword(final Sword sword);
 
+  /**
+   * @return the current role of the unit
+   */
+  Role getRole();
+
+  /**
+   * @param role the new role of the unit
+   */
+  void setRole(Role role);
+
   void combat(IUnit unit);
+
+  void useItem(IUnit target);
 
   void receiveNormalDamage(IEquipableItem item);
 
@@ -101,6 +114,4 @@ public interface IUnit {
   void receiveIncreasedDamage(IEquipableItem item);
 
   void receiveReducedDamage(IEquipableItem item);
-
-  void counterAttack(IUnit target);
 }

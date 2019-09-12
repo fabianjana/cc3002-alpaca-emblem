@@ -19,14 +19,10 @@ public abstract class AbstractItem implements IEquipableItem {
   /**
    * Constructor for a default item without any special behaviour.
    *
-   * @param name
-   *     the name of the item
-   * @param power
-   *     the power of the item (this could be the amount of damage or healing the item does)
-   * @param minRange
-   *     the minimum range of the item
-   * @param maxRange
-   *     the maximum range of the item
+   * @param name     the name of the item
+   * @param power    the power of the item (this could be the amount of damage or healing the item does)
+   * @param minRange the minimum range of the item
+   * @param maxRange the maximum range of the item
    */
   protected AbstractItem(final String name, final int power, final int minRange, final int maxRange) {
     this.name = name;
@@ -64,6 +60,9 @@ public abstract class AbstractItem implements IEquipableItem {
   public int getMaxRange() {
     return maxRange;
   }
+
+  @Override
+  public abstract void useOn(IUnit target);
 
   @Override
   public void receiveAxeDamage(IEquipableItem item) {

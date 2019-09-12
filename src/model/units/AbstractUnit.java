@@ -8,6 +8,8 @@ import java.util.List;
 
 import model.items.*;
 import model.map.Location;
+import model.roles.NoRole;
+import model.roles.Role;
 
 /**
  * This class represents an abstract unit.
@@ -27,6 +29,7 @@ public abstract class AbstractUnit implements IUnit {
   private int hitPoints;
   protected IEquipableItem equippedItem;
   private Location location;
+  private Role role;
 
   /**
    * Creates a new Unit.
@@ -49,6 +52,7 @@ public abstract class AbstractUnit implements IUnit {
     this.movement = movement;
     this.location = location;
     this.items.addAll(Arrays.asList(items).subList(0, min(maxItems, items.length)));
+    this.role = new NoRole();
   }
 
   @Override
@@ -69,34 +73,12 @@ public abstract class AbstractUnit implements IUnit {
   @Override
   public void setEquippedItem(final IEquipableItem item) {
     this.equippedItem = item;
+    item.setOwner(this);
   }
 
   @Override
   public void equipItem(final IEquipableItem item) {
     item.equipTo(this);
-  }
-
-  @Override
-  public Location getLocation() {
-    return location;
-  }
-
-  @Override
-  public void setLocation(final Location location) {
-    this.location = location;
-  }
-
-  @Override
-  public int getMovement() {
-    return movement;
-  }
-
-  @Override
-  public void moveTo(final Location targetLocation) {
-    if (getLocation().distanceTo(targetLocation) <= getMovement()
-        && targetLocation.getUnit() == null) {
-      setLocation(targetLocation);
-    }
   }
 
   @Override
@@ -124,46 +106,85 @@ public abstract class AbstractUnit implements IUnit {
     // do nothing
   }
 
+  @Override
+  public Location getLocation() {
+    return location;
+  }
+
+  @Override
+  public void setLocation(final Location location) {
+    this.location = location;
+  }
+
+  @Override
+  public int getMovement() {
+    return movement;
+  }
+
+  @Override
+  public void moveTo(final Location targetLocation) {
+    if (getLocation().distanceTo(targetLocation) <= getMovement()
+        && targetLocation.getUnit() == null) {
+      setLocation(targetLocation);
+    }
+  }
+
+  @Override
+  public Role getRole() {
+    return role;
+  }
+
+  @Override
+  public void setRole(Role role) {
+    this.role = role;
+  }
+
   /**
-   * Check if the target is out of range.
+   * Check if the target is on range of unit's equipped item
    */
-  private boolean isOutOfRange(Location targetLocation) {
+  private boolean outOfRange(Location targetLocation) {
     return getLocation().distanceTo(targetLocation) < getEquippedItem().getMinRange()
             || getLocation().distanceTo(targetLocation) > getEquippedItem().getMaxRange();
   }
 
   @Override
   public void combat(IUnit target) {
-    if (getEquippedItem() == null || isOutOfRange(target.getLocation())) { return; }
-    getEquippedItem().useItem(target);
-    target.counterAttack(this);
+    getRole().combat(this, target);
   }
 
-   public void counterAttack(IUnit target) {
-     if (getEquippedItem() == null || isOutOfRange(target.getLocation())
-        || this.hitPoints == 0) {
-       return;
-     }
-     getEquippedItem().useItem(target);
+  @Override
+  public void useItem(IUnit target) {
+    if (outOfRange(target.getLocation())) return;
+    getEquippedItem().useOn(target);
+  }
+
+  /**
+   * Unit dies
+   *
+   * @return the new hitPoints of the unit
+   */
+  private int die() {
+    setRole(new NoRole());
+    return 0;
   }
 
   @Override
   public void receiveNormalDamage(IEquipableItem item) {
-    hitPoints = (hitPoints > item.getPower()) ? (hitPoints - item.getPower()) : 0;
+    hitPoints = (hitPoints > item.getPower()) ? (hitPoints - item.getPower()) : die();
   }
 
   @Override
   public void receiveNormalHeal(IEquipableItem item) {
-    hitPoints = (maxHitPoints < item.getPower()) ? maxHitPoints : (hitPoints + item.getPower());
+    hitPoints = (maxHitPoints > item.getPower()) ? (hitPoints + item.getPower()) : maxHitPoints;
   }
 
   @Override
   public void receiveIncreasedDamage(IEquipableItem item) {
-    hitPoints = (hitPoints > item.getPower() * 1.5) ? 0 : (int) (hitPoints - item.getPower() * 1.5);
+    hitPoints = (hitPoints > item.getPower() * 1.5) ? (int) (hitPoints - item.getPower() * 1.5) : die();
   }
 
   @Override
   public void receiveReducedDamage(IEquipableItem item) {
-    hitPoints = (hitPoints > item.getPower() - 20) ? 0 : (hitPoints - (item.getPower() - 20));
+    hitPoints = (hitPoints > item.getPower() - 20) ? (hitPoints - (item.getPower() - 20)) : die();
   }
 }

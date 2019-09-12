@@ -34,7 +34,7 @@ public class Sword extends AbstractItem {
   }
 
   @Override
-  public void useItem(IUnit target) {
+  public void useOn(IUnit target) {
     target.getEquippedItem().receiveSwordDamage(this);
   }
 }

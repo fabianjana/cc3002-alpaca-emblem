@@ -3,6 +3,7 @@ package model.units;
 import model.items.Bow;
 import model.items.IEquipableItem;
 import model.map.Location;
+import model.roles.DamageDealer;
 
 /**
  * This class represents an <i>Archer</i> type unit.
@@ -33,7 +34,7 @@ public class Archer extends AbstractUnit {
 
   @Override
   public void equipBow(final Bow bow) {
-    bow.setOwner(this);
-    equippedItem = bow;
+    setEquippedItem(bow);
+    setRole(new DamageDealer());
   }
 }
