@@ -55,21 +55,69 @@ public interface IEquipableItem {
    */
   int getMaxRange();
 
+  /**
+   * Use this item on the target.
+   * <p>
+   * The effect of the item change depending if
+   * the target have or not an equipped item.
+   *
+   * @param target who will take the effect of the item
+   */
   void useOn(IUnit target);
 
+  /**
+   * Receive an attack from an Axe
+   *
+   * @param item item which will receive the attack
+   */
   void receiveAxeDamage(IEquipableItem item);
 
+  /**
+   * Receive an attack from a Bow
+   *
+   * @param item item which will receive the attack
+   */
   void receiveBowDamage(IEquipableItem item);
 
+  /**
+   * Receive an attack from a Spear
+   *
+   * @param item item which will receive the attack
+   */
   void receiveSpearDamage(IEquipableItem item);
 
+  /**
+   * Receive heal from a Staff
+   *
+   * @param item item which will receive the healing
+   */
   void receiveStaffHealing(IEquipableItem item);
 
+  /**
+   * Receive an attack from a Sword
+   *
+   * @param item item which will receive the attack
+   */
   void receiveSwordDamage(IEquipableItem item);
 
+  /**
+   * Receive an attack from a Light Magic Book
+   *
+   * @param item item which will receive the attack
+   */
   void receiveLightMagicBookDamage(IEquipableItem item);
 
+  /**
+   * Receive an attack from a Dark Magic Book
+   *
+   * @param item item which will receive the attack
+   */
   void receiveDarkMagicBookDamage(IEquipableItem item);
 
+  /**
+   * Receive an attack from a Soul Magic Book
+   *
+   * @param item item which will receive the attack
+   */
   void receiveSoulMagicBookDamage(IEquipableItem item);
 }

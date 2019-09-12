@@ -116,7 +116,10 @@ public interface IUnit {
 
   void receiveNormalHeal(IEquipableItem item);
 
+  void receiveIncreasedHealing(IEquipableItem item);
+
   void receiveIncreasedDamage(IEquipableItem item);
 
   void receiveReducedDamage(IEquipableItem item);
+
 }

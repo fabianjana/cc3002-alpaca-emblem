@@ -42,11 +42,21 @@ public class Sword extends AbstractItem {
     }
   }
 
+  /**
+   * Swords receives reduced damage from Axes.
+   *
+   * @param item item which will receive the attack
+   */
   @Override
   public void receiveAxeDamage(IEquipableItem item) {
     getOwner().receiveReducedDamage(item);
   }
 
+  /**
+   * Swords receives increased damage from Spears.
+   *
+   * @param item item which will receive the attack
+   */
   @Override
   public void receiveSpearDamage(IEquipableItem item) {
     getOwner().receiveIncreasedDamage(item);

@@ -3,8 +3,10 @@ package model.items;
 import model.units.IUnit;
 
 /**
+ * This class represents a Bow.
+ *
  * @author Ignacio Slater Muñoz
- * @since
+ * @since 1.0
  */
 public class Bow extends AbstractItem {
 

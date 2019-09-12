@@ -64,41 +64,97 @@ public abstract class AbstractItem implements IEquipableItem {
   @Override
   public abstract void useOn(IUnit target);
 
+  /**
+   * Default behavior for non-magic items
+   * <p>
+   * Default non-magic items will receive normal damage.
+   *
+   * @param item item which will receive the attack
+   */
   @Override
   public void receiveAxeDamage(IEquipableItem item) {
     getOwner().receiveNormalDamage(item);
   }
 
+  /**
+   * Default behavior for non-magic items
+   * <p>
+   * Default non-magic items will receive normal damage.
+   *
+   * @param item item which will receive the attack
+   */
   @Override
   public void receiveBowDamage(IEquipableItem item) {
     getOwner().receiveNormalDamage(item);
   }
 
+  /**
+   * Default behavior for non-magic items
+   * <p>
+   * Default non-magic items will receive normal damage.
+   *
+   * @param item item which will receive the attack
+   */
   @Override
   public void receiveSpearDamage(IEquipableItem item) {
     getOwner().receiveNormalDamage(item);
   }
 
+  /**
+   * Default behavior for non-magic items
+   * <p>
+   * Default non-magic items will receive normal healing.
+   *
+   * @param item item which will receive the healing
+   */
   @Override
   public void receiveStaffHealing(IEquipableItem item) {
     getOwner().receiveNormalHeal(item);
   }
 
+  /**
+   * Default behavior for non-magic items
+   * <p>
+   * Default non-magic items will receive normal damage.
+   *
+   * @param item item which will receive the attack
+   */
   @Override
   public void receiveSwordDamage(IEquipableItem item) {
     getOwner().receiveNormalDamage(item);
   }
 
+  /**
+   * Default behavior for non-magic items
+   * <p>
+   * All non-magic items will receive increased damage from magic books.
+   *
+   * @param item item which will receive the attack
+   */
   @Override
   public void receiveDarkMagicBookDamage(IEquipableItem item) {
     getOwner().receiveIncreasedDamage(item);
   }
 
+  /**
+   * Default behavior for non-magic items
+   * <p>
+   * All non-magic items will receive increased damage from magic books.
+   *
+   * @param item item which will receive the attack
+   */
   @Override
   public void receiveLightMagicBookDamage(IEquipableItem item) {
     getOwner().receiveIncreasedDamage(item);
   }
 
+  /**
+   * Default behavior for non-magic items
+   * <p>
+   * All non-magic items will receive increased damage from magic books.
+   *
+   * @param item item which will receive the attack
+   */
   @Override
   public void receiveSoulMagicBookDamage(IEquipableItem item) {
     getOwner().receiveIncreasedDamage(item);

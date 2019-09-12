@@ -5,7 +5,7 @@ import model.units.IUnit;
 /**
  * This class represents an Axe.
  * <p>
- * Axes are strong against spears but weak agains swords.
+ * Axes are strong against spears but weak against swords.
  *
  * @author Ignacio Slater Muñoz
  * @since 1.0
@@ -42,11 +42,21 @@ public class Axe extends AbstractItem {
     }
   }
 
+  /**
+   * Axes receives increased damage from Swords.
+   *
+   * @param item item which will receive the attack
+   */
   @Override
   public void receiveSwordDamage(IEquipableItem item) {
     getOwner().receiveIncreasedDamage(item);
   }
 
+  /**
+   * Axes receives reduced damage from Spears.
+   *
+   * @param item item which will receive the attack
+   */
   @Override
   public void receiveSpearDamage(IEquipableItem item) {
     getOwner().receiveReducedDamage(item);

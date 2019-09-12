@@ -26,6 +26,7 @@ public abstract class AbstractUnit implements IUnit {
   protected final List<IEquipableItem> items = new ArrayList<>();
   private final int maxHitPoints;
   private final int movement;
+  private final int maxItems;
   private int hitPoints;
   protected IEquipableItem equippedItem;
   private Location location;
@@ -50,9 +51,38 @@ public abstract class AbstractUnit implements IUnit {
     this.maxHitPoints = maxHitPoints;
     this.hitPoints = maxHitPoints;
     this.movement = movement;
+    this.maxItems = maxItems;
     this.location = location;
     this.items.addAll(Arrays.asList(items).subList(0, min(maxItems, items.length)));
     this.role = new NoRole();
+  }
+
+  /**
+   * Checks if an item is in the inventory
+   * <p>
+   * Don't need to override the equals method from object
+   * because our intention is compare them by reference.
+   *
+   * @param item item to check
+   * @return true if the item is in the unit inventory
+   */
+  private boolean onInventory(IEquipableItem item) {
+    for (IEquipableItem itemOnInventory : items)
+      if (itemOnInventory.equals(item))
+        return true;
+    return false;
+  }
+
+  /**
+   * Add an item to the inventory if it isn't full.
+   *
+   * @param item item to add
+   */
+  private void addItem(IEquipableItem item) {
+    if (items.size() < maxItems) {
+      items.add(item);
+      item.setOwner(this);
+    }
   }
 
   @Override
@@ -73,7 +103,6 @@ public abstract class AbstractUnit implements IUnit {
   @Override
   public void setEquippedItem(final IEquipableItem item) {
     this.equippedItem = item;
-    item.setOwner(this);
   }
 
   @Override
@@ -190,6 +219,7 @@ public abstract class AbstractUnit implements IUnit {
 
   @Override
   public void receiveReducedDamage(IEquipableItem item) {
-    hitPoints = (hitPoints > item.getPower() - 20) ? (hitPoints - Math.max(item.getPower() - 20, 0)) : die();
+    int reducedDamage = Math.max(0, item.getPower() - 20);
+    hitPoints = (hitPoints > reducedDamage) ? (hitPoints - reducedDamage) : die();
   }
 }

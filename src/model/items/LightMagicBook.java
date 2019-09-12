@@ -38,11 +38,21 @@ public class LightMagicBook extends AbstractMagicBook {
         }
     }
 
+    /**
+     * Light Magic Books receives increased damage from Soul Magic Books.
+     *
+     * @param item item which will receive the attack
+     */
     @Override
     public void receiveSoulMagicBookDamage(IEquipableItem item) {
         getOwner().receiveIncreasedDamage(item);
     }
 
+    /**
+     * Light Magic Books receives reduced damage from Dark Magic Books.
+     *
+     * @param item item which will receive the attack
+     */
     @Override
     public void receiveDarkMagicBookDamage(IEquipableItem item) {
         getOwner().receiveReducedDamage(item);
