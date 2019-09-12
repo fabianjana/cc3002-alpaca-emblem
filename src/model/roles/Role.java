@@ -2,6 +2,14 @@ package model.roles;
 
 import model.units.IUnit;
 
+/**
+ * This interface represents the <i>roles</i> that an unit have in game.
+ * <p>
+ * Combats execution depends on the role of the unit who executed it and on the role of the target unit.
+ *
+ * @author Fabián Jaña
+ * @since 1.1
+ */
 public interface Role {
 
     /**
