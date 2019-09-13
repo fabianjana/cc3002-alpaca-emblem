@@ -26,8 +26,8 @@ public class DamageDealer implements Role {
      */
     @Override
     public void combat(IUnit unit, IUnit target) {
-        unit.useItem(target);
-        target.getRole().counterAttack(unit, target);
+        if (unit.useItem(target))
+            target.getRole().counterAttack(unit, target);
     }
 
     /**
@@ -39,5 +39,10 @@ public class DamageDealer implements Role {
     @Override
     public void counterAttack(IUnit unit, IUnit target) {
         target.useItem(unit);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof DamageDealer;
     }
 }

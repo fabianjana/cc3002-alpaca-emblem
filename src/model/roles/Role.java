@@ -28,4 +28,12 @@ public interface Role {
      */
     void counterAttack(IUnit unit, IUnit target);
 
+    /**
+     * Checks if Role is equals to another object
+     *
+     * @param obj object to compare
+     * @return true if the instances match
+     */
+    @Override
+    boolean equals(Object obj);
 }

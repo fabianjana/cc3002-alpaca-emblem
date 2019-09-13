@@ -18,6 +18,31 @@ import model.roles.Role;
 public interface IUnit {
 
   /**
+   * Checks if an item is in the inventory
+   * <p>
+   * Don't need to override the equals method from object
+   * because our intention is compare them by reference.
+   *
+   * @param item item to check
+   * @return true if the item is in the unit inventory
+   */
+  boolean onInventory(IEquipableItem item);
+
+  /**
+   * Add an item to the inventory if it isn't full.
+   *
+   * @param item item to add
+   */
+  void addItem(IEquipableItem item);
+
+  /**
+   * Remove an item from the inventory
+   *
+   * @param item to remove
+   */
+  void removeItem(IEquipableItem item);
+
+  /**
    * Sets the currently equipped item of this unit.
    *
    * @param item
@@ -119,8 +144,9 @@ public interface IUnit {
    * If the target is on range of the equipped item, use the equipped item on the target unit
    *
    * @param target target who will receive this unit equipped item effect.
+   * @return true if the item was used successfully
    */
-  void useItem(IUnit target);
+  boolean useItem(IUnit target);
 
   /**
    * Receive a no-modified attack
@@ -157,4 +183,16 @@ public interface IUnit {
    */
   void receiveReducedDamage(IEquipableItem item);
 
+  /**
+   * Gives an item on the unit inventory to the target unit
+   *
+   * @param target unit who will receive the item
+   * @param item item which will be traded
+   */
+  void tradeItem(IUnit target, IEquipableItem item);
+
+  /**
+   * @return true if inventory have 1 or more slots
+   */
+  boolean inventoryNotFull();
 }

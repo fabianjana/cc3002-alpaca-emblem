@@ -39,4 +39,9 @@ public class Support implements Role {
     @Override
     public void counterAttack(IUnit unit, IUnit target) {
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Support;
+    }
 }

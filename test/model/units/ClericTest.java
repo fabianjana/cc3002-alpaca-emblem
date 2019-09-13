@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import model.items.Axe;
+import model.roles.NoRole;
+import model.roles.Support;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -32,236 +34,116 @@ public class ClericTest extends AbstractTestUnit {
   @Test
   @Override
   public void equipStaffTest() {
+    //without item on inventory
     assertNull(cleric.getEquippedItem());
     cleric.equipItem(staff);
-    assertEquals(staff, cleric.getEquippedItem());
-  }
+    assertNull(cleric.getEquippedItem());
+    assertNull(staff.getOwner());
+    assertEquals(cleric.getRole(), new NoRole());
 
-  @Override
-  public void equipTestItem() {
+    //adding item to inventory
+    cleric.addItem(staff);
     cleric.equipItem(staff);
+    assertEquals(staff, cleric.getEquippedItem());
+    assertEquals(cleric, staff.getOwner());
+    assertEquals(cleric.getRole(), new Support());
+
+    //removing the item in the inventory
+    cleric.removeItem(staff);
+    assertNull(cleric.getEquippedItem());
+    assertNull(staff.getOwner());
+    assertEquals(cleric.getRole(), new NoRole());
   }
 
-  /**
-   * Check if combat with alpaca works correctly
-   */
-  @Test
   @Override
-  public void combatAlpacaTest() {
-    setTargetAlpaca();
-    getTargetAlpaca().receiveNormalDamage(new Axe("Axe", 40, 1,2));
+  public void combatTest(IUnit target) {
+    target.receiveNormalDamage(new Axe("Axe", 40, 1,2));
+    getTestUnit().addItem(staff);
+    getTestUnit().addItem(overhealStaff);
 
-    // Heal without any item equipped, out of range
-    getTestUnit().combat(getTargetAlpaca());
+    // Heal without any item equipped
+    getTestUnit().combat(target);
     assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(10, getTargetAlpaca().getHitPoints());
+    assertEquals(10, target.getHitPoints());
 
-    // Attack with bow out of range
-    equipTestItem();
-    getTestUnit().combat(getTargetAlpaca());
+    // Heal out of range
+    target.moveTo(field.getCell(2,1));
+    cleric.equipItem(staff);
+    getTestUnit().combat(target);
     assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(50, getTargetAlpaca().getHitPoints());
+    assertEquals(10, target.getHitPoints());
 
-    // Attack with bow in range
-    getTargetAlpaca().moveTo(field.getCell(2,0));
-    getTestUnit().combat(getTargetAlpaca());
+    // Heal in range
+    target.moveTo(field.getCell(1,0));
+    getTestUnit().combat(target);
     assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(40, getTargetAlpaca().getHitPoints());
+    assertEquals(20, target.getHitPoints());
 
-    // Overkill test
-    getTestUnit().equipItem(overkillBow);
-    getTestUnit().combat(getTargetAlpaca());
+    // Overheal test
+    getTestUnit().equipItem(overhealStaff);
+    getTestUnit().combat(target);
     assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(0, getTargetAlpaca().getHitPoints());
+    assertEquals(50, target.getHitPoints());
   }
 
-  /**
-   * Check if combat with archer works correctly
-   */
   @Test
   @Override
   public void combatArcherTest() {
     setTargetArcher();
+    IUnit target = getTargetArcher();
+    target.receiveNormalDamage(new Axe("Axe", 40, 1,2));
+    target.addItem(targetBow);
+    getTestUnit().addItem(staff);
+    getTestUnit().addItem(overhealStaff);
+    getTestUnit().equipItem(staff);
+    target.equipItem(targetBow);
 
-    // Attack without any item equipped, out of range
-    getTestUnit().combat(getTargetArcher());
+    // Heal in range
+    target.moveTo(field.getCell(1,0));
+    getTestUnit().combat(target);
     assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(50, getTargetArcher().getHitPoints());
+    assertEquals(20, target.getHitPoints());
 
-    // Attack with bow out of range
-    equipTestItem();
-    getTestUnit().combat(getTargetArcher());
+    // Overheal test
+    getTestUnit().equipItem(overhealStaff);
+    getTestUnit().combat(target);
     assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(50, getTargetArcher().getHitPoints());
-
-    // Attack with bow in range, without target equipping item
-    getTargetArcher().moveTo(field.getCell(2,0));
-    getTestUnit().combat(getTargetArcher());
-    assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(40, getTargetArcher().getHitPoints());
-
-    // Attack in range with both using item
-    getTargetArcher().equipItem(targetBow);
-    getTestUnit().combat(getTargetArcher());
-    assertEquals(40, getTestUnit().getHitPoints());
-    assertEquals(30, getTargetArcher().getHitPoints());
-
-    // Overkill test
-    getTestUnit().equipItem(overkillBow);
-    getTestUnit().combat(getTargetArcher());
-    assertEquals(40, getTestUnit().getHitPoints());
-    assertEquals(0, getTargetArcher().getHitPoints());
+    assertEquals(50, target.getHitPoints());
   }
 
-  /**
-   * Check if combat against cleric works correctly
-   */
   @Test
   @Override
-  public void combatClericTest() {
-    setTargetCleric();
+  public void combatSorcererTest() {
+    setTargetSorcerer();
+    IUnit target = getTargetSorcerer();
+    target.receiveNormalDamage(new Axe("Axe", 40, 1,2));
+    target.addItem(targetLightMagicBook);
+    getTestUnit().addItem(staff);
+    getTestUnit().addItem(overhealStaff);
 
-    // Attack without any item equipped, out of range
-    getTestUnit().combat(getTargetCleric());
+    // Heal without any item equipped
+    getTestUnit().combat(target);
     assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(50, getTargetCleric().getHitPoints());
+    assertEquals(10, target.getHitPoints());
 
-    // Attack with bow out of range
-    equipTestItem();
-    getTestUnit().combat(getTargetCleric());
+    // Heal out of range
+    target.moveTo(field.getCell(2,1));
+    cleric.equipItem(staff);
+    target.equipItem(targetLightMagicBook);
+    getTestUnit().combat(target);
     assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(50, getTargetCleric().getHitPoints());
+    assertEquals(10, target.getHitPoints());
 
-    // Attack with bow in range, without target equipping item
-    getTargetCleric().moveTo(field.getCell(2,0));
-    getTestUnit().combat(getTargetCleric());
+    // Heal in range
+    target.moveTo(field.getCell(2,0));
+    getTestUnit().combat(target);
     assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(40, getTargetCleric().getHitPoints());
+    assertEquals(25, target.getHitPoints());
 
-    // Attack in range with both using item
-    getTargetCleric().equipItem(targetStaff);
-    getTestUnit().combat(getTargetCleric());
+    // Overheal test
+    getTestUnit().equipItem(overhealStaff);
+    getTestUnit().combat(target);
     assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(30, getTargetCleric().getHitPoints());
-
-    // Overkill test
-    getTestUnit().equipItem(overkillBow);
-    getTestUnit().combat(getTargetCleric());
-    assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(0, getTargetCleric().getHitPoints());
-  }
-
-  /**
-   * Check if combat against fighter works correctly
-   */
-  @Test
-  @Override
-  public void combatFighterTest() {
-    setTargetFighter();
-
-    // Attack without any item equipped, out of range
-    getTestUnit().combat(getTargetFighter());
-    assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(50, getTargetFighter().getHitPoints());
-
-    // Attack with bow out of range
-    equipTestItem();
-    getTestUnit().combat(getTargetFighter());
-    assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(50, getTargetFighter().getHitPoints());
-
-    // Attack with bow in range, without target equipping item
-    getTargetFighter().moveTo(field.getCell(2,0));
-    getTestUnit().combat(getTargetFighter());
-    assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(40, getTargetFighter().getHitPoints());
-
-    // Attack in range with both using item
-    getTargetFighter().equipItem(targetAxe);
-    getTestUnit().combat(getTargetFighter());
-    assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(30, getTargetFighter().getHitPoints());
-
-    // Overkill test
-    getTestUnit().equipItem(overkillBow);
-    getTestUnit().combat(getTargetFighter());
-    assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(0, getTargetFighter().getHitPoints());
-  }
-
-  /**
-   * Check if combat against hero works correctly
-   */
-  @Test
-  @Override
-  public void combatHeroTest() {
-    setTargetHero();
-
-    // Attack without any item equipped, out of range
-    getTestUnit().combat(getTargetHero());
-    assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(50, getTargetHero().getHitPoints());
-
-    // Attack with bow out of range
-    equipTestItem();
-    getTestUnit().combat(getTargetHero());
-    assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(50, getTargetHero().getHitPoints());
-
-    // Attack with bow in range, without target equipping item
-    getTargetHero().moveTo(field.getCell(2,0));
-    getTestUnit().combat(getTargetHero());
-    assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(40, getTargetHero().getHitPoints());
-
-    // Attack in range with both using item
-    getTargetHero().equipItem(targetSpear);
-    getTestUnit().combat(getTargetHero());
-    assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(30, getTargetHero().getHitPoints());
-
-    // Overkill test
-    getTestUnit().equipItem(overkillBow);
-    getTestUnit().combat(getTargetHero());
-    assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(0, getTargetHero().getHitPoints());
-  }
-
-  /**
-   * Check if combat against swordMaster works correctly
-   */
-  @Test
-  @Override
-  public void combatSwordMasterTest() {
-    setTargetSwordMaster();
-
-    // Attack without any item equipped, out of range
-    getTestUnit().combat(getTargetSwordMaster());
-    assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(50, getTargetSwordMaster().getHitPoints());
-
-    // Attack with bow out of range
-    equipTestItem();
-    getTestUnit().combat(getTargetSwordMaster());
-    assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(50, getTargetSwordMaster().getHitPoints());
-
-    // Attack with bow in range, without target equipping item
-    getTargetSwordMaster().moveTo(field.getCell(2,0));
-    getTestUnit().combat(getTargetSwordMaster());
-    assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(40, getTargetSwordMaster().getHitPoints());
-
-    // Attack in range with both using item
-    getTargetSwordMaster().equipItem(targetSword);
-    getTestUnit().combat(getTargetSwordMaster());
-    assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(30, getTargetSwordMaster().getHitPoints());
-
-    // Overkill test
-    getTestUnit().equipItem(overkillBow);
-    getTestUnit().combat(getTargetSwordMaster());
-    assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(0, getTargetSwordMaster().getHitPoints());
+    assertEquals(50, target.getHitPoints());
   }
 }

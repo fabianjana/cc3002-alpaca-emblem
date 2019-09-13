@@ -1,14 +1,12 @@
 package model.units;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import model.items.*;
 import model.map.Field;
 import model.map.Location;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Ignacio Slater Muñoz
@@ -22,12 +20,14 @@ public abstract class AbstractTestUnit implements ITestUnit {
   protected Fighter targetFighter;
   protected Hero targetHero;
   protected SwordMaster targetSwordMaster;
+  protected Sorcerer targetSorcerer;
   protected Field field;
   protected Bow bow, targetBow, overkillBow;
   protected Axe axe, targetAxe, overkillAxe;
   protected Sword sword, targetSword, overkillSword;
   protected Staff staff, targetStaff, overhealStaff;
   protected Spear spear, targetSpear, overkillSpear;
+  protected MagicBook lightMagicBook, darkMagicBook, soulMagicBook, targetLightMagicBook, targetDarkMagicBook, targetSoulMagicBook, overkillMagicBook;
 
   @Override
   public void setTargetAlpaca() {
@@ -57,6 +57,11 @@ public abstract class AbstractTestUnit implements ITestUnit {
   @Override
   public void setTargetSwordMaster() {
     targetSwordMaster = new SwordMaster(50, 2, field.getCell(1, 0));
+  }
+
+  @Override
+  public void setTargetSorcerer() {
+    targetSorcerer = new Sorcerer(50, 2, field.getCell(1, 0));
   }
 
   /**
@@ -96,18 +101,25 @@ public abstract class AbstractTestUnit implements ITestUnit {
     this.spear = new Spear("Spear", 10, 1, 2);
     this.staff = new Staff("Staff", 10, 1, 2);
     this.bow = new Bow("Bow", 10, 2, 3);
+    this.lightMagicBook = new LightMagicBook("Book", 10, 2, 3);
+    this.darkMagicBook = new DarkMagicBook("Book", 10, 2, 3);
+    this.soulMagicBook = new SoulMagicBook("Book", 10, 2, 3);
 
     this.targetAxe = new Axe("Axe", 10, 1, 2);
     this.targetSword = new Sword("Sword", 10, 1, 2);
     this.targetSpear = new Spear("Spear", 10, 1, 2);
     this.targetStaff = new Staff("Staff", 10, 1, 2);
     this.targetBow = new Bow("Bow", 10, 2, 3);
+    this.targetLightMagicBook = new LightMagicBook("Book", 10, 2, 3);
+    this.targetDarkMagicBook = new DarkMagicBook("Book", 10, 2, 3);
+    this.targetSoulMagicBook = new SoulMagicBook("Book", 10, 2, 3);
 
     this.overkillAxe = new Axe("Axe", 100, 1, 2);
     this.overkillSword = new Sword("Sword", 100, 1, 2);
     this.overkillSpear = new Spear("Spear", 100, 1, 2);
     this.overhealStaff = new Staff("Staff", 100, 1, 2);
     this.overkillBow = new Bow("Bow", 100, 2, 3);
+    this.overkillMagicBook = new LightMagicBook("Book", 100, 2, 3);
   }
 
   /**
@@ -147,6 +159,7 @@ public abstract class AbstractTestUnit implements ITestUnit {
   @Override
   public void checkEquippedItem(IEquipableItem item) {
     assertNull(getTestUnit().getEquippedItem());
+    getTestUnit().addItem(item);
     getTestUnit().equipItem(item);
     assertNull(getTestUnit().getEquippedItem());
   }
@@ -215,6 +228,39 @@ public abstract class AbstractTestUnit implements ITestUnit {
     return bow;
   }
 
+  @Test
+  @Override
+  public void equipLightMagicBookTest() {
+    checkEquippedItem(getLightMagicBook());
+  }
+
+  @Override
+  public MagicBook getLightMagicBook() {
+    return lightMagicBook;
+  }
+
+  @Test
+  @Override
+  public void equipDarkMagicBookTest() {
+    checkEquippedItem(getDarkMagicBook());
+  }
+
+  @Override
+  public MagicBook getDarkMagicBook() {
+    return darkMagicBook;
+  }
+
+  @Test
+  @Override
+  public void equipSoulMagicBookTest() {
+    checkEquippedItem(getSoulMagicBook());
+  }
+
+  @Override
+  public MagicBook getSoulMagicBook() {
+    return soulMagicBook;
+  }
+
   /**
    * Checks if the unit moves correctly
    */
@@ -240,9 +286,6 @@ public abstract class AbstractTestUnit implements ITestUnit {
   public Field getField() {
     return field;
   }
-
-  @Override
-  public abstract void equipTestItem();
 
   @Override
   public Alpaca getTargetAlpaca() {
@@ -274,19 +317,18 @@ public abstract class AbstractTestUnit implements ITestUnit {
     return targetSwordMaster;
   }
 
-  /**
-   * Generic combat test without any equipped item
-   */
+  @Override
+  public Sorcerer getTargetSorcerer() {
+    return targetSorcerer;
+  }
+
   @Override
   public void combatTest(IUnit target) {
     getTestUnit().combat(target);
-    assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(50, target.getHitPoints());
+    assertEquals(getTestUnit().getHitPoints(), 50);
+    assertEquals(target.getHitPoints(), 50);
   }
 
-  /**
-   * Check if combat against alpaca works correctly
-   */
   @Override
   @Test
   public void combatAlpacaTest() {
@@ -301,14 +343,12 @@ public abstract class AbstractTestUnit implements ITestUnit {
     combatTest(getTargetArcher());
   }
 
-
   @Override
   @Test
   public void combatClericTest() {
     setTargetCleric();
     combatTest(getTargetCleric());
   }
-
 
   @Override
   @Test
@@ -317,14 +357,12 @@ public abstract class AbstractTestUnit implements ITestUnit {
     combatTest(getTargetFighter());
   }
 
-
   @Override
   @Test
   public void combatHeroTest() {
     setTargetHero();
     combatTest(getTargetHero());
   }
-
 
   @Override
   @Test
@@ -333,6 +371,37 @@ public abstract class AbstractTestUnit implements ITestUnit {
     combatTest(getTargetSwordMaster());
   }
 
+  @Override
+  @Test
+  public void combatSorcererTest() {
+    setTargetSorcerer();
+    combatTest(getTargetSorcerer());
+  }
 
+  @Override
+  @Test
+  public void tradeItemTest() {
+    setTargetAlpaca();
 
+    //Empty inventory
+    assertTrue(getTestUnit().getItems().isEmpty());
+    assertTrue(getTargetAlpaca().getItems().isEmpty());
+
+    //Trade axe with empty inventory
+    getTestUnit().tradeItem(getTargetAlpaca(), axe);
+    assertTrue(getTestUnit().getItems().isEmpty());
+    assertTrue(getTargetAlpaca().getItems().isEmpty());
+
+    //Adding axe to alpaca, checking the owner
+    getTargetAlpaca().addItem(axe);
+    assertFalse(getTestUnit().onInventory(axe));
+    assertTrue(getTargetAlpaca().onInventory(axe));
+    assertEquals(axe.getOwner(), getTargetAlpaca());
+
+    //Trade axe, checking the owner
+    getTargetAlpaca().tradeItem(getTestUnit(), axe);
+    assertTrue(getTestUnit().onInventory(axe));
+    assertFalse(getTargetAlpaca().onInventory(axe));
+    assertEquals(axe.getOwner(), getTestUnit());
+  }
 }

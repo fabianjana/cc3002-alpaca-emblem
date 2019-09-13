@@ -3,6 +3,8 @@ package model.units;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import model.roles.DamageDealer;
+import model.roles.NoRole;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -30,21 +32,30 @@ public class FighterTest extends AbstractTestUnit {
 
   /**
    * Checks if the axe is equipped correctly to the unit
+   * Also checks if role and owner works correctly
    */
   @Test
   @Override
   public void equipAxeTest() {
+    //without axe on inventory
     assertNull(fighter.getEquippedItem());
     fighter.equipItem(axe);
-    assertEquals(axe, fighter.getEquippedItem());
-  }
+    assertNull(fighter.getEquippedItem());
+    assertNull(axe.getOwner());
+    assertEquals(fighter.getRole(), new NoRole());
 
-  /**
-   * Equip an axe to the unit
-   */
-  @Override
-  public void equipTestItem() {
+    //adding an axe to inventory
+    fighter.addItem(axe);
     fighter.equipItem(axe);
+    assertEquals(axe, fighter.getEquippedItem());
+    assertEquals(fighter, axe.getOwner());
+    assertEquals(fighter.getRole(), new DamageDealer());
+
+    //removing the axe in the inventory
+    fighter.removeItem(axe);
+    assertNull(fighter.getEquippedItem());
+    assertNull(axe.getOwner());
+    assertEquals(fighter.getRole(), new NoRole());
   }
 
   /**
@@ -54,6 +65,8 @@ public class FighterTest extends AbstractTestUnit {
   @Override
   public void combatAlpacaTest() {
     setTargetAlpaca();
+    getTestUnit().addItem(axe);
+    getTestUnit().addItem(overkillAxe);
 
     // Attack without any item equipped
     getTestUnit().combat(getTargetAlpaca());
@@ -62,13 +75,13 @@ public class FighterTest extends AbstractTestUnit {
 
     // Attack out of range
     getTargetAlpaca().moveTo(field.getCell(2,1));
-    equipTestItem();
+    fighter.equipItem(axe);
     getTestUnit().combat(getTargetAlpaca());
     assertEquals(50, getTestUnit().getHitPoints());
     assertEquals(50, getTargetAlpaca().getHitPoints());
 
     // Attack in range
-    getTargetAlpaca().moveTo(field.getCell(2,0));
+    getTargetAlpaca().moveTo(field.getCell(1,0));
     getTestUnit().combat(getTargetAlpaca());
     assertEquals(50, getTestUnit().getHitPoints());
     assertEquals(40, getTargetAlpaca().getHitPoints());
@@ -87,6 +100,9 @@ public class FighterTest extends AbstractTestUnit {
   @Override
   public void combatArcherTest() {
     setTargetArcher();
+    getTargetArcher().addItem(targetBow);
+    getTestUnit().addItem(axe);
+    getTestUnit().addItem(overkillAxe);
 
     // Attack without any item equipped, out of range
     getTestUnit().combat(getTargetArcher());
@@ -95,7 +111,7 @@ public class FighterTest extends AbstractTestUnit {
 
     // Attack out of range
     getTargetArcher().moveTo(field.getCell(2,1));
-    equipTestItem();
+    fighter.equipItem(axe);
     getTestUnit().combat(getTargetArcher());
     assertEquals(50, getTestUnit().getHitPoints());
     assertEquals(50, getTargetArcher().getHitPoints());
@@ -126,6 +142,9 @@ public class FighterTest extends AbstractTestUnit {
   @Override
   public void combatClericTest() {
     setTargetCleric();
+    getTargetCleric().addItem(targetStaff);
+    getTestUnit().addItem(axe);
+    getTestUnit().addItem(overkillAxe);
 
     // Attack without any item equipped, out of range
     getTestUnit().combat(getTargetCleric());
@@ -134,7 +153,7 @@ public class FighterTest extends AbstractTestUnit {
 
     // Attack out of range
     getTargetCleric().moveTo(field.getCell(2,1));
-    equipTestItem();
+    fighter.equipItem(axe);
     getTestUnit().combat(getTargetCleric());
     assertEquals(50, getTestUnit().getHitPoints());
     assertEquals(50, getTargetCleric().getHitPoints());
@@ -165,6 +184,9 @@ public class FighterTest extends AbstractTestUnit {
   @Override
   public void combatFighterTest() {
     setTargetFighter();
+    getTargetFighter().addItem(targetAxe);
+    getTestUnit().addItem(axe);
+    getTestUnit().addItem(overkillAxe);
 
     // Attack without any item equipped, out of range
     getTestUnit().combat(getTargetFighter());
@@ -173,7 +195,7 @@ public class FighterTest extends AbstractTestUnit {
 
     // Attack out of range
     getTargetFighter().moveTo(field.getCell(2,1));
-    equipTestItem();
+    fighter.equipItem(axe);
     getTestUnit().combat(getTargetFighter());
     assertEquals(50, getTestUnit().getHitPoints());
     assertEquals(50, getTargetFighter().getHitPoints());
@@ -204,6 +226,9 @@ public class FighterTest extends AbstractTestUnit {
   @Override
   public void combatHeroTest() {
     setTargetHero();
+    getTargetHero().addItem(targetSpear);
+    getTestUnit().addItem(axe);
+    getTestUnit().addItem(overkillAxe);
 
     // Attack without any item equipped, out of range
     getTestUnit().combat(getTargetHero());
@@ -212,7 +237,7 @@ public class FighterTest extends AbstractTestUnit {
 
     // Attack out of range
     getTargetHero().moveTo(field.getCell(2,1));
-    equipTestItem();
+    fighter.equipItem(axe);
     getTestUnit().combat(getTargetHero());
     assertEquals(50, getTestUnit().getHitPoints());
     assertEquals(50, getTargetHero().getHitPoints());
@@ -243,20 +268,24 @@ public class FighterTest extends AbstractTestUnit {
   @Override
   public void combatSwordMasterTest() {
     setTargetSwordMaster();
+    getTargetSwordMaster().addItem(targetSword);
+    getTestUnit().addItem(axe);
+    getTestUnit().addItem(overkillAxe);
 
     // Attack without any item equipped, out of range
     getTestUnit().combat(getTargetSwordMaster());
     assertEquals(50, getTestUnit().getHitPoints());
     assertEquals(50, getTargetSwordMaster().getHitPoints());
 
-    // Attack with bow out of range
-    equipTestItem();
+    // Attack out of range
+    getTargetSwordMaster().moveTo(field.getCell(2,1));
+    fighter.equipItem(axe);
     getTestUnit().combat(getTargetSwordMaster());
     assertEquals(50, getTestUnit().getHitPoints());
     assertEquals(50, getTargetSwordMaster().getHitPoints());
 
-    // Attack with bow in range, without target equipping item
-    getTargetSwordMaster().moveTo(field.getCell(2,1));
+    // Attack in range, without target equipping item
+    getTargetSwordMaster().moveTo(field.getCell(1,0));
     getTestUnit().combat(getTargetSwordMaster());
     assertEquals(50, getTestUnit().getHitPoints());
     assertEquals(40, getTargetSwordMaster().getHitPoints());
@@ -264,13 +293,49 @@ public class FighterTest extends AbstractTestUnit {
     // Attack in range with both using item
     getTargetSwordMaster().equipItem(targetSword);
     getTestUnit().combat(getTargetSwordMaster());
-    assertEquals(50, getTestUnit().getHitPoints());
-    assertEquals(30, getTargetSwordMaster().getHitPoints());
+    assertEquals(35, getTestUnit().getHitPoints());
+    assertEquals(40, getTargetSwordMaster().getHitPoints());
 
     // Overkill test
-    getTestUnit().equipItem(overkillBow);
+    getTestUnit().equipItem(overkillAxe);
     getTestUnit().combat(getTargetSwordMaster());
-    assertEquals(50, getTestUnit().getHitPoints());
+    assertEquals(35, getTestUnit().getHitPoints());
     assertEquals(0, getTargetSwordMaster().getHitPoints());
+  }
+
+  @Test
+  @Override
+  public void combatSorcererTest() {
+    setTargetSorcerer();
+    IUnit target = getTargetSorcerer();
+    target.addItem(targetLightMagicBook);
+    getTestUnit().addItem(axe);
+    getTestUnit().addItem(overkillAxe);
+
+    // Attack without any item equipped
+    getTestUnit().combat(target);
+    assertEquals(50, getTestUnit().getHitPoints());
+    assertEquals(50, target.getHitPoints());
+
+    // Attack out of range
+    target.moveTo(field.getCell(2,1));
+    fighter.equipItem(axe);
+    target.equipItem(targetLightMagicBook);
+    getTestUnit().combat(target);
+    assertEquals(50, getTestUnit().getHitPoints());
+    assertEquals(50, target.getHitPoints());
+
+    // Attack in range
+    target.moveTo(field.getCell(2,0));
+    getTestUnit().combat(target);
+    assertEquals(35, getTestUnit().getHitPoints());
+    assertEquals(35, target.getHitPoints());
+
+    // Overkill test
+    getTestUnit().equipItem(overkillAxe);
+    getTestUnit().combat(target);
+    assertEquals(35, getTestUnit().getHitPoints());
+    assertEquals(0, target.getHitPoints());
+
   }
 }

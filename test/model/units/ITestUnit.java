@@ -54,6 +54,11 @@ public interface ITestUnit {
   void setTargetSwordMaster();
 
   /**
+   * Set up a Sorcerer target
+   */
+  void setTargetSorcerer();
+
+  /**
    * Creates a set of testing weapons
    */
   void setWeapons();
@@ -120,6 +125,30 @@ public interface ITestUnit {
    */
   Bow getBow();
 
+  @Test
+  void equipLightMagicBookTest();
+
+  /**
+   * @return the test lightMagicBook
+   */
+  MagicBook getLightMagicBook();
+
+  @Test
+  void equipDarkMagicBookTest();
+
+  /**
+   * @return the test darkMagicBook
+   */
+  MagicBook getDarkMagicBook();
+
+  @Test
+  void equipSoulMagicBookTest();
+
+  /**
+   * @return the test soulMagicBook
+   */
+  MagicBook getSoulMagicBook();
+
   /**
    * Checks if the unit moves correctly
    */
@@ -130,11 +159,6 @@ public interface ITestUnit {
    * @return the test field
    */
   Field getField();
-
-  /**
-   * Equip a valid item to this unit
-   */
-  void equipTestItem();
 
   /**
    * @return the target Alpaca
@@ -167,7 +191,12 @@ public interface ITestUnit {
   SwordMaster getTargetSwordMaster();
 
   /**
-   * Checks if combat works correctly against a target
+   * @return the target Sorcerer
+   */
+  Sorcerer getTargetSorcerer();
+
+  /**
+   * Alpaca combat test
    */
   void combatTest(IUnit target);
 
@@ -184,26 +213,38 @@ public interface ITestUnit {
   void combatArcherTest();
 
   /**
-   * Checks if combat works correctly against an Cleric Unit
+   * Checks if combat works correctly against a Cleric Unit
    */
   @Test
   void combatClericTest();
 
   /**
-   * Checks if combat works correctly against an Fighter Unit
+   * Checks if combat works correctly against a Fighter Unit
    */
   @Test
   void combatFighterTest();
 
   /**
-   * Checks if combat works correctly against an Hero Unit
+   * Checks if combat works correctly against a Hero Unit
    */
   @Test
   void combatHeroTest();
 
   /**
-   * Checks if combat works correctly against an SwordMaster Unit
+   * Checks if combat works correctly against a SwordMaster Unit
    */
   @Test
   void combatSwordMasterTest();
+
+  /**
+   * Checks if combat works correctly against a Sorcerer Unit
+   */
+  @Test
+  void combatSorcererTest();
+
+  /**
+   * Checks if tradeItem works correctly
+   */
+  @Test
+  void tradeItemTest();
 }

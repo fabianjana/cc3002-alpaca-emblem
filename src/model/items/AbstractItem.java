@@ -26,7 +26,7 @@ public abstract class AbstractItem implements IEquipableItem {
    */
   protected AbstractItem(final String name, final int power, final int minRange, final int maxRange) {
     this.name = name;
-    this.power = power;
+    this.power = Math.max(power, 0);
     this.minRange = Math.max(minRange, 1);
     this.maxRange = Math.max(maxRange, this.minRange);
   }

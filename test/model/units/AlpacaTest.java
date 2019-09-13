@@ -1,5 +1,7 @@
 package model.units;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * Test set for the alpaca unit
  *
@@ -21,13 +23,5 @@ public class AlpacaTest extends AbstractTestUnit {
   @Override
   public Alpaca getTestUnit() {
     return alpaca;
-  }
-
-  /**
-   * Alpaca can't equip any item
-   */
-  @Override
-  public void equipTestItem() {
-    // do nothing
   }
 }

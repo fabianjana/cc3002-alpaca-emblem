@@ -58,32 +58,24 @@ public abstract class AbstractUnit implements IUnit {
     this.role = new NoRole();
   }
 
-  /**
-   * Checks if an item is in the inventory
-   * <p>
-   * Don't need to override the equals method from object
-   * because our intention is compare them by reference.
-   *
-   * @param item item to check
-   * @return true if the item is in the unit inventory
-   */
-  private boolean onInventory(IEquipableItem item) {
-    for (IEquipableItem itemOnInventory : items)
-      if (itemOnInventory.equals(item))
-        return true;
-    return false;
+  @Override
+  public boolean onInventory(IEquipableItem item) {
+    return items.contains(item);
   }
 
-  /**
-   * Add an item to the inventory if it isn't full.
-   *
-   * @param item item to add
-   */
-  private void addItem(IEquipableItem item) {
-    if (items.size() < maxItems) {
+  @Override
+  public void addItem(IEquipableItem item) {
+    if (inventoryNotFull()) {
       items.add(item);
       item.setOwner(this);
     }
+  }
+
+  @Override
+  public void removeItem(IEquipableItem item) {
+    item.setOwner(null);
+    if (item.equals(getEquippedItem())) unequipItem();
+    items.remove(item);
   }
 
   @Override
@@ -108,7 +100,13 @@ public abstract class AbstractUnit implements IUnit {
 
   @Override
   public void equipItem(final IEquipableItem item) {
-    item.equipTo(this);
+    if (onInventory(item))
+      item.equipTo(this);
+  }
+
+  public void unequipItem() {
+    setEquippedItem(null);
+    setRole(new NoRole());
   }
 
   @Override
@@ -188,9 +186,10 @@ public abstract class AbstractUnit implements IUnit {
   }
 
   @Override
-  public void useItem(IUnit target) {
-    if (outOfRange(target.getLocation())) return;
+  public boolean useItem(IUnit target) {
+    if (outOfRange(target.getLocation())) return false;
     getEquippedItem().useOn(target);
+    return true;
   }
 
   /**
@@ -210,7 +209,7 @@ public abstract class AbstractUnit implements IUnit {
 
   @Override
   public void receiveNormalHeal(IEquipableItem item) {
-    int healing = Math.max(hitPoints + item.getPower(),maxHitPoints);
+    int healing = Math.min(hitPoints + item.getPower(),maxHitPoints);
     hitPoints = (maxHitPoints > hitPoints) ? healing : maxHitPoints;
   }
 
@@ -221,7 +220,7 @@ public abstract class AbstractUnit implements IUnit {
    */
   @Override
   public void receiveIncreasedHealing(IEquipableItem item) {
-    int increasedHealing = Math.max((int) (hitPoints + item.getPower() * 1.5), maxHitPoints);
+    int increasedHealing = Math.min((int) (hitPoints + item.getPower() * 1.5), maxHitPoints);
     hitPoints = (maxHitPoints > hitPoints) ? increasedHealing : maxHitPoints;
   }
 
@@ -239,5 +238,18 @@ public abstract class AbstractUnit implements IUnit {
   public void receiveReducedDamage(IEquipableItem item) {
     int reducedDamage = Math.max(0, item.getPower() - 20);
     hitPoints = (hitPoints > reducedDamage) ? (hitPoints - reducedDamage) : die();
+  }
+
+  @Override
+  public void tradeItem(IUnit target, IEquipableItem item) {
+    if (onInventory(item) && target.inventoryNotFull()) {
+      this.removeItem(item);
+      target.addItem(item);
+    }
+  }
+
+  @Override
+  public boolean inventoryNotFull() {
+    return items.size() < maxItems;
   }
 }
