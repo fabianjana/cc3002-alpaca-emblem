@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import controller.Tactician;
 import model.items.*;
 import model.map.Location;
 import model.roles.NoRole;
@@ -32,6 +33,8 @@ public abstract class AbstractUnit implements IUnit {
   protected IEquipableItem equippedItem;
   private Location location;
   private Role role;
+  private Tactician owner;
+  private boolean moved;
 
   /**
    * Creates a new Unit.
@@ -56,6 +59,7 @@ public abstract class AbstractUnit implements IUnit {
     this.location = location;
     this.items.addAll(Arrays.asList(items).subList(0, min(maxItems, items.length)));
     this.role = new NoRole();
+    this.moved = false;
   }
 
   @Override
@@ -76,6 +80,11 @@ public abstract class AbstractUnit implements IUnit {
     item.setOwner(null);
     if (item.equals(getEquippedItem())) unequipItem();
     items.remove(item);
+  }
+
+  @Override
+  public int getMaxHitPoints() {
+    return maxHitPoints;
   }
 
   @Override
@@ -157,9 +166,21 @@ public abstract class AbstractUnit implements IUnit {
   @Override
   public void moveTo(final Location targetLocation) {
     if (getLocation().distanceTo(targetLocation) <= getMovement()
-        && targetLocation.getUnit() == null) {
+        && targetLocation.getUnit() == null && !moved) {
       setLocation(targetLocation);
+      markAsMoved();
     }
+  }
+
+  /**
+   * Set a mark if this unit already moved this turn
+   */
+  private void markAsMoved() {
+    moved = true;
+  }
+
+  public void resetMovements() {
+    moved = false;
   }
 
   @Override
@@ -251,5 +272,15 @@ public abstract class AbstractUnit implements IUnit {
   @Override
   public boolean inventoryNotFull() {
     return items.size() < maxItems;
+  }
+
+  @Override
+  public void setOwner(Tactician owner) {
+    this.owner = owner;
+  }
+
+  @Override
+  public Tactician getOwner() {
+    return owner;
   }
 }

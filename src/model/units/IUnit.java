@@ -2,6 +2,7 @@ package model.units;
 
 import java.util.List;
 
+import controller.Tactician;
 import model.items.*;
 import model.map.Location;
 import model.roles.Role;
@@ -54,6 +55,11 @@ public interface IUnit {
    * @return hit points of the unit
    */
   int getHitPoints();
+
+  /**
+   * @return max hp of the unit
+   */
+  int getMaxHitPoints();
 
   /**
    * @return the items carried by this unit
@@ -195,4 +201,20 @@ public interface IUnit {
    * @return true if inventory have 1 or more slots
    */
   boolean inventoryNotFull();
+
+  /**
+   * Set a tactician as the owner of this unit
+   * @param owner the tactician in possession of this unit
+   */
+  void setOwner(Tactician owner);
+
+  /**
+   * @return the owner of this unit
+   */
+  Tactician getOwner();
+
+  /**
+   * Dismark the movement mark of this unit
+   */
+  void resetMovements();
 }

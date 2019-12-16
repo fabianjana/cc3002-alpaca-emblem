@@ -15,8 +15,23 @@ import java.util.*;
 public class Field {
 
   private Map<String, Location> map = new HashMap<>();
-  private Random random = new Random();
+  private Random random;
   private StringBuilder builder = new StringBuilder();
+
+  /**
+   * Creates a new map
+   */
+  public Field() {
+    random = new Random();
+  }
+
+  /**
+   * Creates a new map with a random seed
+   * @param randomSeed the seed to generate the map
+   */
+  public Field(final long randomSeed) {
+    random = new Random(randomSeed);
+  }
 
   /**
    * Add cells to the map.
@@ -139,5 +154,9 @@ public class Field {
    */
   public boolean checkConnection(final Location cell1, final Location cell2) {
     return cell1.isNeighbour(cell2);
+  }
+
+  public int getSize() {
+    return 0;
   }
 }
