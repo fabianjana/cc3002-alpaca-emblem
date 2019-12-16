@@ -214,7 +214,13 @@ public interface IUnit {
   Tactician getOwner();
 
   /**
-   * Dismark the movement mark of this unit
+   * Uncheck the movement mark of this unit
    */
   void resetMovements();
+
+  /**
+   * Check if a unit has moved
+   * @return true if the unit moved this turn
+   */
+  boolean hasMoved();
 }

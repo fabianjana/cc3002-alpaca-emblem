@@ -138,7 +138,7 @@ public class GameController {
    * @return the current player's selected unit
    */
   public IUnit getSelectedUnit() {
-    return null;
+    return getTurnOwner().getSelectedUnit();
   }
 
   /**
@@ -150,14 +150,14 @@ public class GameController {
    *     vertical position of the unit
    */
   public void selectUnitIn(int x, int y) {
-
+    getTurnOwner().selectUnitIn(x, y);
   }
 
   /**
    * @return the inventory of the currently selected unit.
    */
   public List<IEquipableItem> getItems() {
-    return null;
+    return getTurnOwner().getSelectedUnitInventory();
   }
 
   /**
@@ -167,7 +167,7 @@ public class GameController {
    *     the location of the item in the inventory.
    */
   public void equipItem(int index) {
-
+    getTurnOwner().equipItem(index);
   }
 
   /**

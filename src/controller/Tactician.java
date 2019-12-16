@@ -44,6 +44,10 @@ public class Tactician {
         units.add(unit);
     }
 
+    public List<IUnit> getUnits() {
+        return List.copyOf(units);
+    }
+
     /**
      * Set a unit owned by this tactician on the current game map
      * @param unit the unit
@@ -56,21 +60,34 @@ public class Tactician {
             return;
         Location cell = gameMap.getCell(x, y);
         // check if the cell already have a unit
-        if(cell.getUnit() == null)
-            cell.setUnit(unit);
+        if(cell.getUnit() == null) {
+            unit.setLocation(cell);
+        }
     }
 
-
+    /**
+     * Selects a unit in the game map
+     *
+     * @param x
+     *     horizontal position of the unit
+     * @param y
+     *     vertical position of the unit
+     */
     public void selectUnitIn(int x, int y) {
         selectedUnit = gameMap.getCell(x, y).getUnit();
     }
 
+    /**
+     * @return the current player's selected unit
+     */
     public IUnit getSelectedUnit() {
         return selectedUnit;
     }
 
+
     public void moveSelectedUnitTo(int x, int y) {
-        selectedUnit.moveTo(gameMap.getCell(x, y));
+        if(!selectedUnit.hasMoved())
+            selectedUnit.moveTo(gameMap.getCell(x, y));
     }
 
     public void resetMovements() {
@@ -85,6 +102,20 @@ public class Tactician {
 
     public int getSelectedUnitMaxHitPoints() {
         return selectedUnit.getMaxHitPoints();
+    }
+
+    /**
+     * Equips an item from the inventory to the currently selected unit.
+     *
+     * @param index
+     *     the location of the item in the inventory.
+     */
+    public void equipItem(int index) {
+        selectedUnit.equipItem(getSelectedUnitInventory().get(index));
+    }
+
+    public void addItem(IEquipableItem item) {
+        selectedUnit.addItem(item);
     }
 
     public IEquipableItem getSelectedUnitEquippedItem() {

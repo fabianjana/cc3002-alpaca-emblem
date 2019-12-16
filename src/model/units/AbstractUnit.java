@@ -155,7 +155,10 @@ public abstract class AbstractUnit implements IUnit {
 
   @Override
   public void setLocation(final Location location) {
+    if(this.location != null)
+      this.location.setUnit(null);
     this.location = location;
+    location.setUnit(this);
   }
 
   @Override
@@ -166,7 +169,7 @@ public abstract class AbstractUnit implements IUnit {
   @Override
   public void moveTo(final Location targetLocation) {
     if (getLocation().distanceTo(targetLocation) <= getMovement()
-        && targetLocation.getUnit() == null && !moved) {
+        && targetLocation.getUnit() == null) {
       setLocation(targetLocation);
       markAsMoved();
     }
@@ -179,6 +182,12 @@ public abstract class AbstractUnit implements IUnit {
     moved = true;
   }
 
+  @Override
+  public boolean hasMoved() {
+    return moved;
+  }
+
+  @Override
   public void resetMovements() {
     moved = false;
   }
